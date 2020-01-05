@@ -13,15 +13,19 @@
       <button @click='specialAttack' v-if="player.activeSpecial">Special Attack</button>
       <button @click='heal' v-if="player.activeHeal">Heal</button>
     </div>
+    <Log v-if="attackLog.length > 0"
+    :attackLog="attackLog"
+    :actionType="actionType"/>
   </div>
 </template>
 
 <script>
 import Status from './components/Status';
+import Log from './components/attackLog'
 import allMonstersArray from './assets/allMonsters'
 
 export default {
-  components: {Status},
+  components: {Status, Log},
   data: () => {
     return {
       player: {
@@ -35,23 +39,42 @@ export default {
       },
       monster: {},
       monCurrHP: Number,
-      allMonsters: []
+      allMonsters: [],
+      attackLog: [],
+      lastPoint: Number,
+      actionType: String
   }
   },
   methods: {
     attack(){
-      this.monCurrHP -= this.damage(this.player.minDamage,this.player.maxDamage);
+      this.lastPoint = this.damage(this.player.minDamage,this.player.maxDamage);
+      this.monCurrHP -= this.lastPoint;
+      this.attackLog.unshift({
+        text: `${this.player.name} attacks ${this.monster.name} for ${this.lastPoint} HP`,
+        type: 'playerAttack'
+      })
+
       if(this.winLose()){return};
       setTimeout(this.monsterAttack,1000);
     },
     specialAttack(){
-      this.monCurrHP -= this.damage(0 ,this.player.maxDamage + 20);
+      this.lastPoint = this.damage(this.player.minDamage,this.player.maxDamage);
+      this.monCurrHP -= this.lastPoint + 20;
+      this.attackLog.unshift({
+        text: `${this.player.name} deals a powerfull blow to ${this.monster.name} for ${this.lastPoint} HP`,
+        type: 'playerSpecialAttack'
+      })
       this.player.activeSpecial = false;
       if(this.winLose()){return};
       setTimeout(this.monsterAttack,500);
     },
     monsterAttack(){
-      this.player.currHP -= this.damage(this.monster.minDamage, this.monster.maxDamage);
+      this.lastPoint = this.damage(this.monster.minDamage,this.monster.maxDamage);
+      this.player.currHP -= this.lastPoint
+      this.attackLog.unshift({
+        text: `${this.monster.name} attacks ${this.player.name} for ${this.lastPoint} HP`,
+        type: 'monsterAttack'
+      })
       if(this.player.countToHeal > 0) {this.player.countToHeal -= 1};
       if(this.winLose()){return};
       if(Math.random()<0.2){this.player.activeSpecial = !this.player.activeSpecial}
@@ -61,7 +84,12 @@ export default {
       return damage;
     },
     heal(){
-      this.player.currHP += Math.max((Math.floor(Math.random()*7)+1),2);
+      this.lastPoint = Math.max((Math.floor(Math.random()*7)+1),2);
+      this.player.currHP += this.lastPoint
+      this.attackLog.unshift({
+        text: `${this.player.name} heals for ${this.lastPoint} HP`,
+        type: 'playerHeals'
+      })
       this.player.countToHeal = 4;
       setTimeout(this.monsterAttack,500);
       if(this.winLose()){return};
@@ -82,12 +110,13 @@ export default {
       this.monster = this.randomMonster();
       this.monCurrHP = this.monster.hit_points;
 
-      //RESET PLAYER
+      //RESET PLAYER & LOG
       this.player.activeSpecial = false;
       this.player.activeHeal = false;
       this.player.countToHeal = 0;
       this.player.maxHP = 150;
       this.player.currHP = this.player.maxHP;
+      this.attackLog = [];
       
       //////////**TODO: NEED TO ASSING DINAMICALLY 
       this.monster.minDamage = 5;
