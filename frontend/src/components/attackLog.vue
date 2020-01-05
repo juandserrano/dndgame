@@ -13,8 +13,13 @@ export default {
   props: ["attackLog"],
   data: () => {
     return {
-           
+           maxLogs: 10
     };
+  },
+  watch: {
+    attackLog: function(){
+      if(this.attackLog.length > 10){this.attackLog.splice(10,1)}
+    }
   }
 };
 </script>

@@ -15,9 +15,9 @@
       <button class='heal' @click='heal' v-if="player.activeHeal">Heal</button>
     </div>
     <div class="actionbar transparentactionbar text-center" v-else>
-      <button>Attack</button>
-      <button v-if="player.activeSpecial">Special Attack</button>
-      <button v-if="player.activeHeal">Heal</button>
+      <button class='attack'>Attack</button>
+      <button class='special' v-if="player.activeSpecial">Special Attack</button>
+      <button class='heal' v-if="player.activeHeal">Heal</button>
     </div>
     <Log v-if="attackLog.length > 0"
     :attackLog="attackLog"/>
@@ -178,11 +178,14 @@ export default {
 
   .transparentactionbar {
     opacity: 0.4;
+    padding: 20px;
+    transition: 200ms;
   }
 
   .actionbar {
     /* border: 1px solid black; */
     padding: 20px;
+    transition: 200ms;
   }
 
   .attack {
