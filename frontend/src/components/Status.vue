@@ -1,9 +1,9 @@
 <template>
   <div class="container">
-    <div class="row">
+    <div class="row align-items-center">
       <div class="col playercol">
         <div>
-          <img class='portrait mx-auto d-block rounded' src="https://images.unsplash.com/photo-1548412576-d92cb3275e23?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1353&q=80" width="200" height="200">
+          <img class='portrait mx-auto d-block rounded' :src="playerPortrait" width='300'>
           <h3>{{ playerName }}</h3>
           <div class="fondo">
             <span class="health" :style="{ width: (playCurrHP/playMaxHP) * 300  + 'px' }">{{ playCurrHP }}</span>
@@ -12,7 +12,7 @@
       </div>
       <div class="col">
         <div>
-          <img class='portrait mx-auto d-block rounded' src="https://images.unsplash.com/photo-1548412576-d92cb3275e23?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1353&q=80" width="200" height="200">
+          <img class='portrait mx-auto d-block rounded' :src="monsterPortrait" width="300">
           <h3>{{ monsterName }}</h3>
           <div class="fondo">
             <span class="health monred" :style="{ width: (monCurrHP/monMaxHP) * 300 + 'px' }">{{ monCurrHP }}</span>
@@ -24,12 +24,24 @@
 </template>
 
 <script>
+import portraitUrl from '../assets/allPortraits'
+
 export default {
-  props: ["playCurrHP", "playMaxHP", "monMaxHP", 'playerName', 'monsterName', 'monCurrHP'],
+  props: ["playCurrHP", "playMaxHP", "monMaxHP", 'playerName', 'monsterName', 'monCurrHP', 'gameResetting'],
   data: () => {
     return {
-      
+      playerPortrait: String,
+      monsterPortrait: String
     };
+  },
+  watch: {
+    gameResetting: function () {
+      this.monsterPortrait = portraitUrl.randomPortraitMonster();      
+    }
+  },
+  mounted(){
+    this.playerPortrait = portraitUrl.randomPortraitPlayer();
+    this.monsterPortrait = portraitUrl.randomPortraitMonster();
   }
 };
 </script>
@@ -39,6 +51,7 @@ export default {
 
 .container {
   border: 1px black solid;
+  box-shadow: 5px 5px 5px grey;
 }
 
 h3 {
@@ -82,4 +95,5 @@ h3 {
 .monred{
   background-color: brown
 }
+
 </style>

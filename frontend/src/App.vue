@@ -6,16 +6,21 @@
     :monCurrHP='monCurrHP'
     :playerName='player.name'
     :monsterName='monster.name'
+    :gameResetting='gameResetting'
     class="status"
     />
-    <div>
-      <button @click='attack'>attack</button>
-      <button @click='specialAttack' v-if="player.activeSpecial">Special Attack</button>
-      <button @click='heal' v-if="player.activeHeal">Heal</button>
+    <div class="actionbar text-center" v-if="!turnInProgress">
+      <button class='attack' @click='attack'>Attack</button>
+      <button class='special' @click='specialAttack' v-if="player.activeSpecial">Special Attack</button>
+      <button class='heal' @click='heal' v-if="player.activeHeal">Heal</button>
+    </div>
+    <div class="actionbar transparentactionbar text-center" v-else>
+      <button>Attack</button>
+      <button v-if="player.activeSpecial">Special Attack</button>
+      <button v-if="player.activeHeal">Heal</button>
     </div>
     <Log v-if="attackLog.length > 0"
-    :attackLog="attackLog"
-    :actionType="actionType"/>
+    :attackLog="attackLog"/>
   </div>
 </template>
 
@@ -23,6 +28,7 @@
 import Status from './components/Status';
 import Log from './components/attackLog'
 import allMonstersArray from './assets/allMonsters'
+
 
 export default {
   components: {Status, Log},
@@ -32,7 +38,7 @@ export default {
         currHP: Number,
         maxHP: Number,
         level: Number,
-        name: 'Juan',
+        name: String,
         countToHeal: 0,
         activeSpecial: false,
         activeHeal: false
@@ -42,11 +48,13 @@ export default {
       allMonsters: [],
       attackLog: [],
       lastPoint: Number,
-      actionType: String
+      turnInProgress: false,
+      gameResetting: false
   }
   },
   methods: {
     attack(){
+      this.turnInProgress = true;
       this.lastPoint = this.damage(this.player.minDamage,this.player.maxDamage);
       this.monCurrHP -= this.lastPoint;
       this.attackLog.unshift({
@@ -55,11 +63,13 @@ export default {
       })
 
       if(this.winLose()){return};
-      setTimeout(this.monsterAttack,1000);
+      setTimeout(this.monsterAttack,500);
+      setTimeout(() => this.turnInProgress = false, 500);
     },
     specialAttack(){
-      this.lastPoint = this.damage(this.player.minDamage,this.player.maxDamage);
-      this.monCurrHP -= this.lastPoint + 20;
+      this.turnInProgress = true;
+      this.lastPoint = this.damage(this.player.minDamage,this.player.maxDamage) + 20;
+      this.monCurrHP -= this.lastPoint;
       this.attackLog.unshift({
         text: `${this.player.name} deals a powerfull blow to ${this.monster.name} for ${this.lastPoint} HP`,
         type: 'playerSpecialAttack'
@@ -67,6 +77,7 @@ export default {
       this.player.activeSpecial = false;
       if(this.winLose()){return};
       setTimeout(this.monsterAttack,500);
+      setTimeout(() => this.turnInProgress = false, 500);
     },
     monsterAttack(){
       this.lastPoint = this.damage(this.monster.minDamage,this.monster.maxDamage);
@@ -84,6 +95,7 @@ export default {
       return damage;
     },
     heal(){
+      this.turnInProgress = true;
       this.lastPoint = Math.max((Math.floor(Math.random()*7)+1),2);
       this.player.currHP += this.lastPoint
       this.attackLog.unshift({
@@ -92,6 +104,7 @@ export default {
       })
       this.player.countToHeal = 4;
       setTimeout(this.monsterAttack,500);
+      setTimeout(() => this.turnInProgress = false, 500);
       if(this.winLose()){return};
     },
     winLose(){
@@ -109,7 +122,8 @@ export default {
       //SET UP RANDOM MONSTER
       this.monster = this.randomMonster();
       this.monCurrHP = this.monster.hit_points;
-
+      this.gameResetting = !this.gameResetting;
+      
       //RESET PLAYER & LOG
       this.player.activeSpecial = false;
       this.player.activeHeal = false;
@@ -117,6 +131,7 @@ export default {
       this.player.maxHP = 150;
       this.player.currHP = this.player.maxHP;
       this.attackLog = [];
+      this.turnInProgress = false;
       
       //////////**TODO: NEED TO ASSING DINAMICALLY 
       this.monster.minDamage = 5;
@@ -150,6 +165,7 @@ export default {
         
     //START NEW GAME
     this.resetGame();    
+    this.player.name = prompt('Welcome!\nPlease enter your adventurers name:','Sexyman');
   }
 
 }
@@ -158,5 +174,32 @@ export default {
 <style>
   .status {
     margin-top: 30px
+  }
+
+  .transparentactionbar {
+    opacity: 0.4;
+  }
+
+  .actionbar {
+    /* border: 1px solid black; */
+    padding: 20px;
+  }
+
+  .attack {
+    box-shadow: 0px 0px 5px rgb(0, 60, 255);
+    border: 1px solid rgb(0, 81, 255);
+    background-color: rgb(167, 198, 255)
+  }
+
+  .special {
+    box-shadow: 0px 0px 5px rgb(255, 218, 6);
+    border: 1px solid rgb(255, 166, 0);
+    background-color: rgb(255, 244, 148)
+  }
+
+  .heal {
+    box-shadow: 0px 0px 5px rgb(30, 255, 0);
+    border: 1px solid rgb(0, 187, 0);
+    background-color: rgb(157, 255, 161)
   }
 </style>
