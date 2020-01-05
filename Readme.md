@@ -4,16 +4,18 @@
 
 ## TODO
 
-[] Create different weapons for player
-    [] Sword
-    [] Axe
-    [] Battleaxe
-    [] Bow
+[ ] Create different weapons for player:
 
-[] Create dice
+    [ ] Sword
+    [ ] Axe
+    [ ] Battleaxe
+    [ ] Bow
 
-[] Create functions for:
-    [] Attack rolls depending on weapon
-    [] Damage rolls depending on weapon
-    [] Check attacks TIA armor class
+[ ] Create dice
+
+[ ] Create functions for:
+
+    [ ] Attack rolls depending on weapon
+    [ ] Damage rolls depending on weapon
+    [ ] Check attacks TIA armor class
 
