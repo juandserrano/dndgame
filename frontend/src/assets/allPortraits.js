@@ -18,7 +18,7 @@ function randomPortraitMonster(){
         'https://fsmedia.imgix.net/b2/2c/51/5e/c185/4d28/858a/d7c161ca53c9/a-gibbering-mouther.jpeg?crop=edges&fit=crop&auto=compress&h=900&w=1200',
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLvcI4JOxa6YzIspEWyy0wc6MBZU8DQ4JbkJihi-xQDs_phk3C&s',
         'https://dungeonsolvers.com/wp-content/uploads/2018/11/night_walker_by_benwootten_dcc5j10-pre.jpg',
-        'http://nerdreactor.com/wp-content/uploads/2013/04/Beholder.jpg'
+        'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.mm.bing.net%2Fth%3Fid%3DOIP.8uNVfwTAKbSorR8jaTfHVwAAAA%26pid%3DApi&f=1%27'
     ];
 
     let i = Math.floor(Math.random()*portraitsUrlArray.length);

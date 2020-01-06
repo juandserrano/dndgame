@@ -12,6 +12,7 @@
     :monsterMod='monAttackModifier'
     :monsterCON='monCON'
     :equipedWeapon='player.currWeapon'
+    :monPortrait='monPortrait'
     class="status"
     />
     <div class="actionbar text-center" v-if="!turnInProgress">
@@ -62,7 +63,8 @@ export default {
       turnInProgress: false,
       gameResetting: false,
       monCON: d(15),
-      monAttackModifier: d(8)
+      monAttackModifier: d(8),
+      monPortrait: String
   }
   },
   methods: {
@@ -170,7 +172,9 @@ export default {
     },
     async resetGame(){
       //SET UP RANDOM MONSTER
-      this.monster = await this.randomMonster();
+      let mons = await this.randomMonster();
+      this.monster = mons.monster;
+      this.monPortrait = mons.portraitUrl;
       this.monCurrHP = this.monster.hit_points;
       this.gameResetting = !this.gameResetting;
       this.monCON = this.monster.armor_class,

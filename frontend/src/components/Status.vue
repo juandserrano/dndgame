@@ -19,7 +19,7 @@
       </div>
       <div class="col">
         <div>
-          <img class='portrait mx-auto d-block rounded' :src="monsterPortrait" width="300">
+          <img class='portrait mx-auto d-block rounded' :src="monPortrait" width="300">
           <h3>{{ monsterName }}</h3>
           <div class="fondo">
             <span class="health monred" :style="{ width: (monCurrHP/monMaxHP) * 300 + 'px' }">{{ monCurrHP }}</span>
@@ -40,11 +40,11 @@
 import portraitUrl from '../assets/allPortraits'
 
 export default {
-  props: ["playCurrHP", "playMaxHP", "monMaxHP", 'playerName', 'monsterName', 'monCurrHP', 'gameResetting', 'playerCON', 'playerMod', 'monsterMod', 'monsterCON', 'equipedWeapon'],
+  props: ["playCurrHP", "playMaxHP", "monMaxHP", 'playerName', 'monsterName', 'monCurrHP', 'gameResetting', 'playerCON', 'playerMod', 'monsterMod', 'monsterCON', 'equipedWeapon', 'monPortrait'],
   data: () => {
     return {
       playerPortrait: String,
-      monsterPortrait: String
+      //monsterPortrait: String
     };
   },
   methods: {
