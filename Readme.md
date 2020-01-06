@@ -23,3 +23,15 @@
 
 [] Webscrapping to find images to each monster in DB
     [] Need to also push the urls to database
+
+[] Add background image
+
+
+## Backlog
+
+[] Refactor
+
+## Stretch
+
+[] Auth
+[] Multiplayer

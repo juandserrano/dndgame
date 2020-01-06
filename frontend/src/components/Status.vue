@@ -76,7 +76,8 @@ export default {
 
 .container {
   border: 1px black solid;
-  box-shadow: 5px 5px 5px grey;
+  box-shadow: 5px 5px 5px rgb(0, 0, 0);
+  background-color: rgba(255, 255, 255, 0.7);
 }
 
 h3 {

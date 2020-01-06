@@ -248,4 +248,10 @@ export default {
     border: 1px solid rgb(0, 187, 0);
     background-color: rgb(157, 255, 161)
   }
+
+  body{
+    background: url('./assets/rosie-fraser-1L71sPT5XKc-unsplash.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
 </style>
