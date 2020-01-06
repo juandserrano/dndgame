@@ -13,6 +13,11 @@ app.use(express.json());
 
 app.listen(serverport,()=>console.log('Backend server running on ' + serverport));
 
+app.use(express.static('../frontend'));
+app.get('/', (req, res) => {
+  res.sendFile('index.html')
+})
+
 mongoose
   .connect(dbconfig.mongoURI, dbconfig.mongoCFG)
   .then(() => {
