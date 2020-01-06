@@ -34,7 +34,9 @@ import Status from './components/Status';
 import Log from './components/attackLog'
 import allMonstersArray from './assets/allMonsters'
 import { d, attackRoll, damageRoll, weaponAttack } from './scripts/dice'
-
+import regeneratorRuntime from 'regenerator-runtime'
+const backendPort = process.env.PORT || 3000;
+const serverIp = process.env.IP || '//localhost';
 
 export default {
   components: {Status, Log},
@@ -166,12 +168,12 @@ export default {
         return true
       } else {return false}
     },
-    resetGame(){
+    async resetGame(){
       //SET UP RANDOM MONSTER
-      this.monster = this.randomMonster();
+      this.monster = await this.randomMonster();
       this.monCurrHP = this.monster.hit_points;
       this.gameResetting = !this.gameResetting;
-      this.monCON = d(15),
+      this.monCON = this.monster.armor_class,
       this.monAttackModifier = d(8)
       
       //RESET PLAYER & LOG
@@ -183,10 +185,10 @@ export default {
       this.attackLog = [];
       this.turnInProgress = false;
     },
-    randomMonster(){
-      let monIndex = Math.floor(Math.random()*this.allMonsters.length);
-      return this.allMonsters[monIndex];
-      
+    randomMonster: async () => {
+      let res = await fetch(`${serverIp}:${backendPort}/api`);
+      let data = await res.json();
+      return data;
     },
     randomDice(sides){
       return Math.floor(Math.random()*(sides+1));
@@ -204,7 +206,7 @@ export default {
   },
   mounted() {
     //IMPORT MONSTERS FROM JS FILE
-    this.allMonsters = allMonstersArray;
+    //this.allMonsters = allMonstersArray;
         
     //START NEW GAME
     this.resetGame();    

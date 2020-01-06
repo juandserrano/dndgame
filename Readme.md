@@ -19,7 +19,7 @@
     [x] Damage rolls depending on weapon
     [x] Check attacks vs armor class
 
-[] Send monster database to well... database (instead of loading from file into memory)
+[x] Send monster database to well... database (instead of loading from file into memory)
 
 [] Webscrapping to find images to each monster in DB
     [] Need to also push the urls to database
@@ -30,6 +30,7 @@
 ## Backlog
 
 [] Refactor
+[] Weapon + Monster sounds
 
 ## Stretch
 
