@@ -208,7 +208,9 @@ export default {
         
     //START NEW GAME
     this.resetGame();    
-    this.player.name = prompt('Welcome!\nPlease enter your adventurers name:','Sexyman');
+    do {
+      this.player.name = prompt('Welcome!\nPlease enter your adventurers name:');
+    }while(this.player.name == '')
   }
 
 }
@@ -249,8 +251,12 @@ export default {
     background-color: rgb(157, 255, 161)
   }
 
+  button{
+    border-radius: 5px;
+  }
+
   body{
-    background: url('./assets/rosie-fraser-1L71sPT5XKc-unsplash.jpg');
+    background: url('https://cdn.glitch.com/526b66c2-5ced-437f-bf9b-a79b857c3980%2Frosie-fraser-1L71sPT5XKc-unsplash.jpg?v=1578327157678');
     background-repeat: no-repeat;
     background-size: cover;
   }
