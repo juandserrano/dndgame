@@ -9,6 +9,13 @@
             <span class="health" :style="{ width: (playCurrHP/playMaxHP) * 300  + 'px' }">{{ playCurrHP }}</span>
           </div>
         </div>
+        <div class="stats">
+          <table>
+            <tr><td><strong>CON</strong></td><td>{{ playerCON }}</td></tr>
+            <tr><td>Attack modifier</td><td>{{ playerMod }}</td></tr>
+            <tr><td>Weapon</td><td>{{ capitalize(equipedWeapon) }}</td></tr>
+          </table>
+        </div>
       </div>
       <div class="col">
         <div>
@@ -17,6 +24,12 @@
           <div class="fondo">
             <span class="health monred" :style="{ width: (monCurrHP/monMaxHP) * 300 + 'px' }">{{ monCurrHP }}</span>
           </div>
+        </div>
+        <div class="stats">
+          <table>
+            <tr><td><strong>CON</strong></td><td>{{ monsterCON }}</td></tr>
+            <tr><td>Attack modifier</td><td>{{ monsterMod }}</td></tr>              
+          </table>
         </div>
       </div>
     </div>
@@ -27,12 +40,18 @@
 import portraitUrl from '../assets/allPortraits'
 
 export default {
-  props: ["playCurrHP", "playMaxHP", "monMaxHP", 'playerName', 'monsterName', 'monCurrHP', 'gameResetting'],
+  props: ["playCurrHP", "playMaxHP", "monMaxHP", 'playerName', 'monsterName', 'monCurrHP', 'gameResetting', 'playerCON', 'playerMod', 'monsterMod', 'monsterCON', 'equipedWeapon'],
   data: () => {
     return {
       playerPortrait: String,
       monsterPortrait: String
     };
+  },
+  methods: {
+    capitalize: function (string){
+      const capString = string.charAt(0).toUpperCase() + string.slice(1)
+      return capString;
+    }
   },
   watch: {
     gameResetting: function () {
@@ -44,6 +63,12 @@ export default {
     this.monsterPortrait = portraitUrl.randomPortraitMonster();
   }
 };
+
+
+
+
+
+
 </script>
 
 <style scoped>
@@ -96,4 +121,21 @@ h3 {
   background-color: brown
 }
 
+table {
+  margin: 0px auto 20px auto;
+}
+
+th, td {
+  margin: 0 auto;
+  border-collapse: collapse;
+  border: 3px solid gray;
+}
+
+td {
+  width: 100px
+}
+.stats {
+  margin: 0 auto;
+  text-align: center;
+}
 </style>

@@ -6,16 +6,20 @@
 
 [ ] Create different weapons for player:
 
-    [] Sword
-    [] Axe
-    [] Battleaxe
+    [x] Sword
+    [x] Axe
+    [x] Battleaxe
     [] Bow
 
-[ ] Create dice
+[x] Create dice
 
-[ ] Create functions for:
+[x] Create functions for:
 
-    [] Attack rolls depending on weapon
-    [] Damage rolls depending on weapon
-    [] Check attacks TIA armor class
+    [x] Attack rolls depending on weapon
+    [x] Damage rolls depending on weapon
+    [x] Check attacks vs armor class
 
+[] Send monster database to well... database (instead of loading from file into memory)
+
+[] Webscrapping to find images to each monster in DB
+    [] Need to also push the urls to database

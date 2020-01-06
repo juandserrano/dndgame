@@ -7,6 +7,11 @@
     :playerName='player.name'
     :monsterName='monster.name'
     :gameResetting='gameResetting'
+    :playerMod='player.attackModifier'
+    :playerCON='player.CON'
+    :monsterMod='monAttackModifier'
+    :monsterCON='monCON'
+    :equipedWeapon='player.currWeapon'
     class="status"
     />
     <div class="actionbar text-center" v-if="!turnInProgress">
@@ -28,6 +33,7 @@
 import Status from './components/Status';
 import Log from './components/attackLog'
 import allMonstersArray from './assets/allMonsters'
+import { d, attackRoll, damageRoll, weaponAttack } from './scripts/dice'
 
 
 export default {
@@ -41,7 +47,10 @@ export default {
         name: String,
         countToHeal: 0,
         activeSpecial: false,
-        activeHeal: false
+        activeHeal: false,
+        currWeapon: 'shortsword',
+        CON: 10,
+        attackModifier: d(6)
       },
       monster: {},
       monCurrHP: Number,
@@ -49,51 +58,90 @@ export default {
       attackLog: [],
       lastPoint: Number,
       turnInProgress: false,
-      gameResetting: false
+      gameResetting: false,
+      monCON: d(15),
+      monAttackModifier: d(8)
   }
   },
   methods: {
     attack(){
       this.turnInProgress = true;
-      this.lastPoint = this.damage(this.player.minDamage,this.player.maxDamage);
+      if(attackRoll(this.player.attackModifier, this.monCON)){
+        this.lastPoint = weaponAttack(this.player.currWeapon);
+      }else{
+        this.lastPoint = 0;
+      }
       this.monCurrHP -= this.lastPoint;
-      this.attackLog.unshift({
-        text: `${this.player.name} attacks ${this.monster.name} for ${this.lastPoint} HP`,
+      if(this.lastPoint == 0){
+        this.attackLog.unshift({
+        text: `${this.player.name} misses his attack!`,
+        type: 'playerAttack'
+        });
+      }else{
+        this.attackLog.unshift({
+        text: `${this.player.name} hits ${this.monster.name} for ${this.lastPoint} HP`,
         type: 'playerAttack'
       })
-
+      
+      }
       if(this.winLose()){return};
       setTimeout(this.monsterAttack,500);
       setTimeout(() => this.turnInProgress = false, 500);
     },
     specialAttack(){
       this.turnInProgress = true;
-      this.lastPoint = this.damage(this.player.minDamage,this.player.maxDamage) + 20;
+      if(attackRoll(this.player.attackModifier, this.monCON)){
+        this.lastPoint = weaponAttack(this.player.currWeapon) + d(8);
+      }else{
+        this.lastPoint = 0;
+      };
       this.monCurrHP -= this.lastPoint;
-      this.attackLog.unshift({
+      if(this.lastPoint == 0){
+        this.attackLog.unshift({
+        text: `${this.player.name} misses his attack!`,
+        type: 'playerSpecialAttack'
+        });
+      }else{
+        this.attackLog.unshift({
         text: `${this.player.name} deals a powerfull blow to ${this.monster.name} for ${this.lastPoint} HP`,
         type: 'playerSpecialAttack'
       })
+      
+      }
       this.player.activeSpecial = false;
       if(this.winLose()){return};
       setTimeout(this.monsterAttack,500);
       setTimeout(() => this.turnInProgress = false, 500);
     },
     monsterAttack(){
-      this.lastPoint = this.damage(this.monster.minDamage,this.monster.maxDamage);
+      if(attackRoll(this.monAttackModifier, this.player.CON)){
+        this.lastPoint = weaponAttack('monster');
+      }else{
+        this.lastPoint = 0;
+      };
+      
+      //this.lastPoint = damageRoll(1,12,3,10);
       this.player.currHP -= this.lastPoint
-      this.attackLog.unshift({
+      if(this.lastPoint == 0){
+        this.attackLog.unshift({
+        text: `${this.monster.name} misses his attack!`,
+        type: 'monsterAttack'
+        });
+      }else{
+        this.attackLog.unshift({
         text: `${this.monster.name} attacks ${this.player.name} for ${this.lastPoint} HP`,
         type: 'monsterAttack'
-      })
+        });
+      }
+      
       if(this.player.countToHeal > 0) {this.player.countToHeal -= 1};
       if(this.winLose()){return};
       if(Math.random()<0.2){this.player.activeSpecial = !this.player.activeSpecial}
     },
-    damage(min, max){
-      let damage = Math.max((Math.floor(Math.random()*max)+1),min);
-      return damage;
-    },
+    // damage(min, max){
+    //   let damage = Math.max((Math.floor(Math.random()*max)+1),min);
+    //   return damage;
+    // },
     heal(){
       this.turnInProgress = true;
       this.lastPoint = Math.max((Math.floor(Math.random()*7)+1),2);
@@ -123,6 +171,8 @@ export default {
       this.monster = this.randomMonster();
       this.monCurrHP = this.monster.hit_points;
       this.gameResetting = !this.gameResetting;
+      this.monCON = d(15),
+      this.monAttackModifier = d(8)
       
       //RESET PLAYER & LOG
       this.player.activeSpecial = false;
@@ -132,13 +182,6 @@ export default {
       this.player.currHP = this.player.maxHP;
       this.attackLog = [];
       this.turnInProgress = false;
-      
-      //////////**TODO: NEED TO ASSING DINAMICALLY 
-      this.monster.minDamage = 5;
-      this.monster.maxDamage = 15;
-      this.player.minDamage = 5;
-      this.player.maxDamage = 10;
-      //////////////////////////
     },
     randomMonster(){
       let monIndex = Math.floor(Math.random()*this.allMonsters.length);
