@@ -33,7 +33,7 @@
 <script>
 import Status from './components/Status';
 import Log from './components/attackLog'
-import allMonstersArray from './assets/allMonsters'
+//import allMonstersArray from './assets/allMonsters'
 import { d, attackRoll, damageRoll, weaponAttack } from './scripts/dice'
 import regeneratorRuntime from 'regenerator-runtime'
 const backendPort = process.env.PORT || 3000;
@@ -190,7 +190,7 @@ export default {
       this.turnInProgress = false;
     },
     randomMonster: async () => {
-      let res = await fetch(`${serverIp}:${backendPort}/api`);
+      let res = await fetch(`/api`); //`${serverIp}:${backendPort}/api`
       let data = await res.json();
       return data;
     },
@@ -264,6 +264,6 @@ export default {
   body{
     background: url('https://cdn.glitch.com/526b66c2-5ced-437f-bf9b-a79b857c3980%2Frosie-fraser-1L71sPT5XKc-unsplash.jpg?v=1578327157678');
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: auto;
   }
 </style>
