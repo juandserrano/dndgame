@@ -25,9 +25,9 @@ app.use(express.json());
 
 app.listen(serverport,()=>console.log('Backend server running on ' + serverport));
 
-app.use(express.static('../frontend'));
+app.use(express.static('./frontend'));
 app.get('/', (req, res) => {
-  res.sendFile('index.html')
+  res.sendFile(__dirname + '/frontend/index.html')
 })
 
 mongoose
@@ -55,14 +55,20 @@ app.get('/api/', async (req, res) =>{
           let firstImageResult = imageResults.value[0];
           //display the details for the first image result. After running the application,
           //you can copy the resulting URLs from the console into your browser to view the image.
-          console.log(`First image content url: ${firstImageResult.contentUrl}`);
+          //console.log(`First image content url: ${firstImageResult.contentUrl}`);
           res.status(200).send({
-           monster: randMonster[0],
-          portraitUrl: firstImageResult.contentUrl
+          monster: randMonster[0],
+          portraitUrl: firstImageResult.thumbnailUrl
           });
       }
     })
-    .catch(err => console.error(err))
+    .catch(err => {
+      res.status(200).send({
+        monster: randMonster[0],
+        portraitUrl: ""
+        });
+        console.error(err);
+    })
 
     
 });
