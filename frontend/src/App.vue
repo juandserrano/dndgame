@@ -216,7 +216,7 @@ export default {
       this.turnInProgress = false;
     },
     randomMonster: async () => {
-      let res = await fetch(`/api`);
+      let res = await fetch(serverIp + `/api`);
       let data = await res.json();
       return data;
     },
