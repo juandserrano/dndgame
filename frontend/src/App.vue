@@ -45,7 +45,10 @@ import { d, attackRoll, damageRoll, weaponAttack } from "./scripts/dice";
 import regeneratorRuntime from "regenerator-runtime";
 const backendPort = process.env.PORT || 3000;
 let serverIp = '';
-if(process.env.PORT){serverIp = ''}else{
+if(process.env.PORT){
+  serverIp = '';
+  console.log('Si hay PORT');
+  }else{
   serverIp = `http://127.0.0.1:${backendPort}`
   console.log('no PORT');
   };
