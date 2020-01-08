@@ -42,11 +42,11 @@
 import Status from "./components/Status";
 import Log from "./components/attackLog";
 import { d, attackRoll, damageRoll, weaponAttack } from "./scripts/dice";
-import regeneratorRuntime from "regenerator-runtime";
+//import regeneratorRuntime from "regenerator-runtime";
 const backendPort = process.env.PORT || 3000;
 const DEV = false; //CHANGE FOR DEV ENVIRONMENT
 let serverIp = String;
-if (DEV){serverIp = 'http://127.0.0.1:3000'}else{serverIp = ''};
+if (DEV){serverIp = 'http://dndslayer.now.sh'}else{serverIp = ''};
 
 export default {
   components: { Status, Log },
@@ -135,7 +135,6 @@ export default {
         this.lastPoint = 0;
       }
 
-      //this.lastPoint = damageRoll(1,12,3,10);
       this.player.currHP -= this.lastPoint;
       if (this.lastPoint == 0) {
         this.attackLog.unshift({
@@ -211,13 +210,10 @@ export default {
       this.turnInProgress = false;
     },
     randomMonster: async () => {
-      let res = await fetch(serverIp + `/api`);
+      let res = await fetch(`https://dndslayer-backend.now.sh/api/`);
       let data = await res.json();
       return data;
-    },
-    randomDice(sides) {
-      return Math.floor(Math.random() * (sides + 1));
-    }
+    } 
   },
   watch: {
     //CHECK TO SEE IF HEALING IS AVAILABLE TO THE PLAYER

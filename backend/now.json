@@ -1,0 +1,9 @@
+{
+    "name": "dndslayer-backend",
+    "version": 2,
+    "env": {
+        "ATLAS_LOGIN": "@atlaslogin"
+    },
+    "builds": [{ "src": "/*.js", "use": "@now/node" }],
+    "routes": [{ "src": "/.*", "dest": "/app.js" }]
+}
