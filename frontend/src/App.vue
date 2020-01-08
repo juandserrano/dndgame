@@ -44,14 +44,9 @@ import Log from "./components/attackLog";
 import { d, attackRoll, damageRoll, weaponAttack } from "./scripts/dice";
 import regeneratorRuntime from "regenerator-runtime";
 const backendPort = process.env.PORT || 3000;
-let serverIp = '';
-if(process.env.PORT){
-  serverIp = '';
-  console.log('Si hay PORT');
-  }else{
-  serverIp = `http://127.0.0.1:${backendPort}`
-  console.log('no PORT');
-  };
+const DEV = false; //CHANGE FOR DEV ENVIRONMENT
+let serverIp = String;
+if (DEV){serverIp = 'http://127.0.0.1:3000'}else{serverIp = ''};
 
 export default {
   components: { Status, Log },
