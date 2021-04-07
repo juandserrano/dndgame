@@ -8,7 +8,7 @@ const CognitiveServicesCredentials = require('ms-rest-azure').CognitiveServicesC
 require('dotenv').config();
 
 //replace this value with your valid subscription key.
-let serviceKey = "4264f8ac6bca410a83e3cc13dffc0f12";
+let serviceKey = "xxxxxxxxx";
 
 //instantiate the image search client 
 let credentials = new CognitiveServicesCredentials(serviceKey);
